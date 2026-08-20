@@ -1,5 +1,5 @@
 {
-  "name": "dsh-custom-css",
+  "name": "dsh-simple-background",
   "version": "0.1.0",
   "description": "Dynamically change DSH Web CSS from Settings: raw CSS, background image, and a user JS file.",
   "type": "module",

@@ -1,4 +1,4 @@
-# dsh-custom-css bundle patch: add the host+client plugin row to the profile.
+# dsh-simple-background bundle patch: add the host+client plugin row to the profile.
 - insert:
     - id: custom-css
-      name: dsh-custom-css
+      name: dsh-simple-background

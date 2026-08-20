@@ -1,4 +1,4 @@
-# dsh-custom-css
+# dsh-simple-background
 
 一个 dsh Web 插件：在 **DSH Web 设置**里动态新增 / 修改 CSS，支持背景图片（含本地图片），
 并把用户 JavaScript 保存为真实文件后由页面加载执行。
