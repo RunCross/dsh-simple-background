@@ -9,25 +9,69 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      
+      - uses: actions/setup-node@v6
         with:
-          node-version: 20
-      - run: npm ci
-      - run: npm test
+          node-version: '24.x'
+          registry-url: https://registry.npmjs.org/
+      
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+      
+      - name: Get pnpm store directory
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+      
+      - uses: actions/cache@v4
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+      
+      - run: pnpm install --frozen-lockfile
+      
+      # 如果你的项目需要构建（如 TypeScript 编译），取消下面注释
+      # - run: pnpm run build
+      
+      # 如果有测试脚本，取消下面注释
+      # - run: pnpm test
 
   publish-npm:
     needs: build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      
+      - uses: actions/setup-node@v6
         with:
-          node-version: 20
+          node-version: '24.x'
           registry-url: https://registry.npmjs.org/
-      - run: npm ci
-      # 如果你的插件需要构建（如 TypeScript 编译），可以在这里添加：
-      # - run: npm run build
+      
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+      
+      - name: Get pnpm store directory
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+      
+      - uses: actions/cache@v4
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+      
+      - run: pnpm install --frozen-lockfile
+      
+      # 如果项目需要构建，取消下面注释
+      # - run: pnpm run build
+      
       - name: Publish to npm
-        run: npm publish --access public --provenance
+        run: pnpm publish --access public  --no-git-checks --provenance
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
