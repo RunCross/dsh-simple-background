@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="820" height="320" viewBox="0 0 820 320" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif">
+  <defs>
+    <linearGradient id="imgL" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#fef3c7"/>
+      <stop offset="1" stop-color="#fcd34d"/>
+    </linearGradient>
+    <linearGradient id="imgR" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#dbeafe"/>
+      <stop offset="1" stop-color="#93c5fd"/>
+    </linearGradient>
+  </defs>
+  <style>
+    .lab { font-size: 13px; fill: #334155; }
+    .small { font-size: 11px; fill: #64748b; }
+    .title { font-size: 15px; font-weight: 700; fill: #0f172a; }
+    .col { stroke: #cbd5e1; stroke-width: 1.5; }
+    .edge { stroke: #f43f5e; stroke-width: 1.5; stroke-dasharray: 5 4; }
+  </style>
+
+  <text x="24" y="30" class="title">左 / 右装饰图片（leftImage / rightImage）</text>
+
+  <rect x="24" y="60" width="150" height="200" rx="10" class="col" fill="#f1f5f9"/>
+  <text x="99" y="120" text-anchor="middle" class="lab">侧边栏</text>
+
+  <rect x="186" y="60" width="440" height="200" rx="10" class="col" fill="#f8fafc"/>
+  <text x="406" y="90" text-anchor="middle" class="lab">对话区</text>
+
+  <rect x="638" y="60" width="130" height="200" rx="10" class="col" fill="#eef2f7"/>
+  <text x="703" y="120" text-anchor="middle" class="lab">详情面板</text>
+
+  <rect x="186" y="176" width="120" height="84" rx="10" fill="url(#imgL)" stroke="#d97706" stroke-width="1.5"/>
+  <text x="246" y="212" text-anchor="middle" class="lab" font-weight="700">左侧图片</text>
+  <text x="246" y="230" text-anchor="middle" class="small">leftImage</text>
+
+  <rect x="518" y="180" width="120" height="80" rx="10" fill="url(#imgR)" stroke="#2563eb" stroke-width="1.5"/>
+  <text x="578" y="214" text-anchor="middle" class="lab" font-weight="700">右侧图片</text>
+  <text x="578" y="232" text-anchor="middle" class="small">rightImage</text>
+
+  <line x1="186" y1="60" x2="186" y2="260" class="edge"/>
+  <line x1="638" y1="60" x2="638" y2="260" class="edge"/>
+
+  <text x="186" y="294" text-anchor="middle" class="small" fill="#f43f5e">左图左边缘对齐侧边栏右边界</text>
+  <text x="638" y="294" text-anchor="middle" class="small" fill="#f43f5e">右图右边缘对齐详情面板左边界</text>
+</svg>

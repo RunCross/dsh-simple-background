@@ -5,17 +5,16 @@
 
 ## 功能
 
-- 设置面板新增「自定义样式 / Custom CSS」页面。
-- 动态注入 / 移除 `<style>`，保存后立即生效，无需重启 dsh web。
-- 支持：
-  - 全局 CSS 文本
-  - 背景图片（URL / data URI / CSS 渐变 / 本地图片；尺寸、位置、重复、不透明度可配；`conversation` 对话界面 / `page` 整个页面二选一）
+- 背景图片：
+  - 主背景（URL / data URI / CSS 渐变 / 本地图片；尺寸、位置、重复、不透明度可配；`conversation` 对话界面 / `page` 整个页面二选一）
   - 对话界面模式下可单独设置左侧工作区（侧边栏）背景图
   - 左 / 右装饰图片（`leftImage` / `rightImage`，锚定中间对话区域左右边缘；高度、底部偏移、不透明度可配）
-  - 可视化 CSS 规则列表（选择器 + 样式声明 + 备注）
-  - 「插入默认规则」：一键生成带说明的常用 CSS 模板
   - 本地图片目录：把本地文件夹里的图片通过 HTTP 提供给页面
-  - 用户 JS 文件：保存到 `$DSH_HOME/custom-css/user.js` 并由页面加载
+- 设置面板新增「自定义样式 / Custom CSS」页面。
+- 动态注入 / 移除 `<style>`，保存后立即生效，无需重启 dsh web。
+- 可视化 CSS 规则列表（选择器 + 样式声明 + 备注）
+- 「插入默认规则」：一键生成带说明的常用 CSS 模板
+- 用户 JS 文件：保存到 `$DSH_HOME/custom-css/user.js` 并由页面加载
 - 浏览器全局 API：`window.dshCustomCss`
 
 ## 安装
@@ -36,31 +35,76 @@ dsh web
 
 ## 使用
 
+### 打开设置面板
+
 1. 打开 DSH Web 右上/左下「设置」。
 2. 进入「自定义样式 / Custom CSS」。
-3. 编辑 CSS、背景图、本地图片目录或 JS 代码，点击「保存」，立即生效。
+3. 勾选「启用自定义样式」，填写下面的背景配置，点「保存」立即生效。
 
-### CSS 规则与默认规则
+### 背景图片配置
 
-- 每条规则包含「选择器 / 样式声明 / 备注」，备注用于标注它影响哪里。
-- 点「插入默认规则」会生成一份带中文（或英文）说明的常用模板，例如：
+插件把背景能力分成三层，按需组合：
 
-| 选择器 | 备注 |
-| --- | --- |
-| `body` | 整个页面：全局字体/背景 |
-| `[data-slot="sidebar"]` | 左侧边栏容器 |
-| `[data-slot="conversation"]` | 中间对话主区域 |
-| `[data-slot="details"]` | 右侧详情面板 |
-| `[data-slot="conversation"] [class*="bubble"]` | 聊天气泡 |
-| `[data-slot="conversation"] [class*="input"]` | 输入/编辑器区域 |
-| `[class*="toolbar"]` | 工具栏 |
+1. **主背景**（`backgroundImage`）：铺在对话区或整个页面。
+2. **左侧工作区背景**（`sidebarBackgroundImage`）：单独给侧边栏换背景。
+3. **左 / 右装饰图片**（`leftImage` / `rightImage`）：固定在对话区左下 / 右下角的独立图片。
 
-默认规则写入草稿后仍需点「保存」才会生效。
+#### 1. 选择背景范围
 
-### 本地图片
+「背景范围 / backgroundMode」决定主背景铺到哪里：
+
+- `conversation`（对话界面）：只铺中间对话区，侧边栏和详情面板保持原样。
+- `page`（整个页面）：侧边栏 + 对话区 + 详情面板全部铺上。
+
+![背景范围](docs/background-mode.svg)
+
+#### 2. 填写主背景图片地址
+
+「图片地址 / backgroundImage」支持：
+
+- `http(s)://...` 网络图片
+- `data:image/...;base64,...` data URI
+- CSS 渐变，例如 `linear-gradient(135deg, #7dd3fc, #f0abfc)`
+- 本地图片地址 `/api/custom-css/assets/文件名.png`（见下方「本地图片」）
+
+再按需调整「尺寸 / 位置 / 重复 / 不透明度」：
+
+| 字段 | 默认值 | 说明 |
+| --- | --- | --- |
+| `backgroundSize` | `cover` | 图片尺寸，`cover` / `contain` / `100% 100%` 等 |
+| `backgroundPosition` | `center` | 图片位置，`center` / `top left` 等 |
+| `backgroundRepeat` | `no-repeat` | 重复方式 |
+| `backgroundOpacity` | `1` | 不透明度 0 到 1，例如 `0.5` |
+
+> `backgroundOpacity` 小于 1 时，插件会改用独立图层渲染，避免把整个页面压暗。
+
+#### 3. 左侧工作区背景（可选）
+
+当「背景范围」为 `conversation` 时，可再给左侧工作区（侧边栏）单独设置背景图：
+
+- 「左侧工作区背景 / sidebarBackgroundImage」：图片地址，支持与主背景相同的格式。
+- 「左侧背景不透明度 / sidebarBackgroundOpacity」：0 到 1，例如 `0.5`。
+- 尺寸 / 位置 / 重复复用主背景的 `backgroundSize` / `backgroundPosition` / `backgroundRepeat`。
+
+#### 4. 左 / 右装饰图片（可选）
+
+在对话区左下角、右下角各放一张独立装饰图片（常用来放吉祥物、边框、LOGO）：
+
+![左 / 右装饰图片](docs/side-images.svg)
+
+- 「左侧图片 / leftImage」：左边缘自动贴合侧边栏右边界。
+- 「右侧图片 / rightImage」：右边缘自动贴合详情面板左边界。
+- 每张图可单独设置：
+  - 高度 `height`：默认 `clamp(360px, 80vh, 960px)`
+  - 底部偏移 `bottom`：默认 `clamp(-24px, -1.6vh, -8px)`
+  - 不透明度 `opacity`：0 到 1
+
+#### 5. 本地图片
 
 浏览器页面无法直接读取 `file://` 或任意本地绝对路径，所以插件会把一个本地目录通过
 HTTP 提供给页面：
+
+![本地图片流程](docs/local-image-flow.svg)
 
 1. 把图片放到「本地图片目录」（默认 `$DSH_HOME/custom-css/assets`，即
    `~/.dsh/custom-css/assets`）。也可以在设置里把 `assetsPath` 改成任意本地文件夹。
@@ -70,17 +114,7 @@ HTTP 提供给页面：
 /api/custom-css/assets/我的图片.png
 ```
 
-3. 保存即可。左侧 / 右侧图片会锚定在中间对话区域的左下 / 右下角（左图左边缘
-   贴合侧边栏右边界，右图右边缘贴合详情面板左边界），可在设置里调整高度、
-   底部偏移与不透明度。也可以在任何 CSS 里使用该地址，例如：
-
-```css
-[data-slot="sidebar"] {
-  background-image: url("/api/custom-css/assets/sidebar-bg.png");
-}
-```
-
-支持子目录：`/api/custom-css/assets/sub/dir/pic.png`（相对于 `assetsPath`）。
+3. 保存即可。支持子目录：`/api/custom-css/assets/sub/dir/pic.png`（相对于 `assetsPath`）。
 
 ## 设置项
 
@@ -177,6 +211,7 @@ window.dshCustomCss.reload()
 dsh-custom-css/
 ├── package.json          # dsh.bundle patch + dsh.client 声明
 ├── cordis.patch.yml      # 插入 host+client 插件行
+├── docs/                 # README 用到的背景配置示意图（SVG）
 ├── lib/
 │   ├── index.js          # Host：注册 settings namespace + user.js/assets 路由
 │   ├── client.js         # Browser：CSS/背景注入 + 设置页 + window.dshCustomCss

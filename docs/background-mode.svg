@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="820" height="360" viewBox="0 0 820 360" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#7dd3fc"/>
+      <stop offset="0.55" stop-color="#a5b4fc"/>
+      <stop offset="1" stop-color="#f0abfc"/>
+    </linearGradient>
+  </defs>
+  <style>
+    .lab { font-size: 13px; fill: #334155; }
+    .mode { font-size: 15px; font-weight: 700; fill: #0f172a; }
+    .col { stroke: #cbd5e1; stroke-width: 1.5; }
+    .conv { stroke: #64748b; stroke-width: 1.5; }
+    .sun { fill: #fbbf24; }
+  </style>
+
+  <text x="24" y="30" class="mode">背景范围 backgroundMode：控制主背景铺到哪里</text>
+
+  <text x="24" y="62" class="lab" font-weight="700">conversation · 对话界面（只铺中间对话区）</text>
+  <rect x="24" y="76" width="150" height="110" rx="10" class="col" fill="#f1f5f9"/>
+  <text x="99" y="135" text-anchor="middle" class="lab">侧边栏</text>
+  <rect x="186" y="76" width="440" height="110" rx="10" class="conv" fill="url(#sky)"/>
+  <circle cx="330" cy="112" r="16" class="sun"/>
+  <text x="406" y="135" text-anchor="middle" class="lab" fill="#1e293b" font-weight="700">对话区 · 有背景图</text>
+  <rect x="638" y="76" width="130" height="110" rx="10" class="col" fill="#f8fafc"/>
+  <text x="703" y="135" text-anchor="middle" class="lab">详情面板</text>
+
+  <text x="24" y="228" class="lab" font-weight="700">page · 整个页面（侧边栏 + 对话区 + 详情面板都铺）</text>
+  <rect x="24" y="242" width="150" height="110" rx="10" class="col" fill="url(#sky)"/>
+  <text x="99" y="301" text-anchor="middle" class="lab" fill="#1e293b" font-weight="700">侧边栏</text>
+  <rect x="186" y="242" width="440" height="110" rx="10" class="conv" fill="url(#sky)"/>
+  <circle cx="330" cy="278" r="16" class="sun"/>
+  <text x="406" y="301" text-anchor="middle" class="lab" fill="#1e293b" font-weight="700">对话区</text>
+  <rect x="638" y="242" width="130" height="110" rx="10" class="col" fill="url(#sky)"/>
+  <text x="703" y="301" text-anchor="middle" class="lab" fill="#1e293b" font-weight="700">详情面板</text>
+</svg>
