@@ -5,6 +5,10 @@
   "type": "module",
   "main": "lib/index.js",
   "types": "lib/types/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/RunCross/dsh-simple-background.git"
+  },
   "exports": {
     ".": {
       "types": "./lib/types/index.d.ts",
