@@ -32,16 +32,16 @@ jobs:
             ${{ runner.os }}-pnpm-store-
       
       - run: pnpm install --frozen-lockfile
-      
-      # 如果你的项目需要构建（如 TypeScript 编译），取消下面注释
       # - run: pnpm run build
-      
-      # 如果有测试脚本，取消下面注释
       # - run: pnpm test
 
   publish-npm:
     needs: build
     runs-on: ubuntu-latest
+    # ⬇️ 新增：添加权限配置
+    permissions:
+      contents: read
+      id-token: write   # 允许生成 OIDC 令牌
     steps:
       - uses: actions/checkout@v4
       
@@ -67,11 +67,9 @@ jobs:
             ${{ runner.os }}-pnpm-store-
       
       - run: pnpm install --frozen-lockfile
-      
-      # 如果项目需要构建，取消下面注释
       # - run: pnpm run build
       
       - name: Publish to npm
-        run: pnpm publish --access public  --no-git-checks --provenance
+        run: pnpm publish --access public --no-git-checks --provenance
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
